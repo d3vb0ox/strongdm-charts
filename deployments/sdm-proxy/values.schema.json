@@ -316,6 +316,51 @@
                         }
                     },
                     "type": "object"
+                },
+                "hpa": {
+                    "description": "HorizontalPodAutoscaler configuration.",
+                    "properties": {
+                        "enabled": {
+                            "description": "Enable HorizontalPodAutoscaler for the proxy cluster deployment.",
+                            "type": "boolean"
+                        },
+                        "minReplicas": {
+                            "description": "Minimum number of replicas for the HPA.",
+                            "type": "integer"
+                        },
+                        "maxReplicas": {
+                            "description": "Maximum number of replicas for the HPA.",
+                            "type": "integer"
+                        },
+                        "targetCPUUtilizationPercentage": {
+                            "description": "Target CPU utilization percentage for scaling. Set to 0 to disable CPU-based scaling.",
+                            "type": "integer"
+                        },
+                        "targetMemoryUtilizationPercentage": {
+                            "description": "Target memory utilization percentage for scaling. Set to 0 to disable memory-based scaling.",
+                            "type": "integer"
+                        },
+                        "annotations": {
+                            "description": "Map of annotations to add to the HPA.",
+                            "properties": {},
+                            "type": "object"
+                        },
+                        "labels": {
+                            "description": "Map of labels to add to the HPA.",
+                            "properties": {},
+                            "type": "object"
+                        },
+                        "behavior": {
+                            "description": "HPA scaling behavior configuration. See https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#configurable-scaling-behavior for more information.",
+                            "properties": {},
+                            "type": "object"
+                        },
+                        "customMetrics": {
+                            "description": "Custom metrics for HPA. See https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics for more information.",
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
                 }
             },
             "type": "object"

@@ -37,8 +37,8 @@ strongdm:
     extraArgs: "" # @schema; description: Space-separated string of args to pass to the `sdm admin clusters add k8spodidentity` command.
 
   auth: # @schema; description: StrongDM authentication sources.
-    clusterKey: "" # @schema; description: The SDM_PROXY_CLUSTER_ACCESS_KEY with which this proxy should authenticate itself. Specify this directly, or provide an existing secret to @strongdm.auth.secretName.
-    clusterSecret: "" # @schema; description: The SDM_PROXY_CLUSTER_SECRET_KEY with which this proxy should authenticate itself. Specify this directly, or provide an existing secret to @strongdm.auth.secretName.
+    clusterKey: "adfa" # @schema; description: The SDM_PROXY_CLUSTER_ACCESS_KEY with which this proxy should authenticate itself. Specify this directly, or provide an existing secret to @strongdm.auth.secretName.
+    clusterSecret: "afadf" # @schema; description: The SDM_PROXY_CLUSTER_SECRET_KEY with which this proxy should authenticate itself. Specify this directly, or provide an existing secret to @strongdm.auth.secretName.
     adminToken: "" # @schema; description: The SDM_ADMIN_TOKEN with which to create StrongDM resources. Specify this directly, or provide an existing secret to @strongdm.auth.secretName.
     secretName: "" # @schema; description: Name of the k8s Secret that contains SDM_PROXY_CLUSTER_ACCESS_KEY and SDM_PROXY_CLUSTER_SECRET_KEY, and/or SDM_ADMIN_TOKEN.
 
@@ -80,3 +80,14 @@ strongdm:
     name: "" # @schema; description: Name of an existing ServiceAccount to use.
     annotations: {} # @schema; description: Map of annotations to add to the ServiceAccount, should one be created.
     labels: {} # @schema; description: Map of labels to add to the ServiceAccount, should one be created.
+
+  hpa: # @schema; description: HorizontalPodAutoscaler configuration.
+    enabled: true # @schema; description: Enable HorizontalPodAutoscaler for the proxy cluster deployment.
+    minReplicas: 2 # @schema; description: Minimum number of replicas for the HPA.
+    maxReplicas: 10 # @schema; description: Maximum number of replicas for the HPA.
+    targetCPUUtilizationPercentage: 75 # @schema; description: Target CPU utilization percentage for scaling. Set to 0 to disable CPU-based scaling.
+    targetMemoryUtilizationPercentage: 80 # @schema; description: Target memory utilization percentage for scaling. Set to 0 to disable memory-based scaling.
+    annotations: {} # @schema; description: Map of annotations to add to the HPA.
+    labels: {} # @schema; description: Map of labels to add to the HPA.
+    behavior: {} # @schema; description: HPA scaling behavior configuration. See https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#configurable-scaling-behavior for more information.
+    customMetrics: [] # @schema; description: Custom metrics for HPA. See https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics for more information.
