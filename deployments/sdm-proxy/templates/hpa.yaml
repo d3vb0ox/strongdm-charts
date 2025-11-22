@@ -1,0 +1,43 @@
+{{- if .Values.strongdm.hpa.enabled }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "strongdm.name" . }}
+  namespace: {{ include "strongdm.namespace" . }}
+  annotations:
+    {{- include "strongdm.annotations" (merge (dict "addtl" .Values.strongdm.hpa.annotations) .) | nindent 4 }}
+  labels:
+    {{- include "strongdm.labels" (merge (dict "addtl" .Values.strongdm.hpa.labels) .) | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "strongdm.name" . }}
+  minReplicas: {{ .Values.strongdm.hpa.minReplicas }}
+  maxReplicas: {{ .Values.strongdm.hpa.maxReplicas }}
+  {{- with .Values.strongdm.hpa.behavior }}
+  behavior:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  metrics:
+    {{- if .Values.strongdm.hpa.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.strongdm.hpa.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.strongdm.hpa.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.strongdm.hpa.targetMemoryUtilizationPercentage }}
+    {{- end }}
+    {{- with .Values.strongdm.hpa.customMetrics }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}
